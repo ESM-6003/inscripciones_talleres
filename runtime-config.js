@@ -1,0 +1,2 @@
+﻿window.WEB_RUNTIME_CONFIG = window.WEB_RUNTIME_CONFIG || {};
+
