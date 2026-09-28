@@ -31,6 +31,9 @@ if "genero" not in WEB_SHEETS_FIELDS:
     except ValueError:
         insert_at = 0
     WEB_SHEETS_FIELDS.insert(insert_at, "genero")
+for student_field in ("pais", "provincia", "indigena", "discapacidad", "discapacidad_cual"):
+    if student_field not in WEB_SHEETS_FIELDS:
+        WEB_SHEETS_FIELDS.append(student_field)
 from services.google_sheets import get_sheets_service
 
 BASE_DIR = Path(__file__).resolve().parent

@@ -77,8 +77,12 @@ Cuando un administrador guarda cambios en el catálogo:
 
 Al guardar inscripciones desde el formulario:
 - se guarda localmente en el navegador
-- y se hace append en Google Sheets directo por Web App
-- y se genera, descarga y envía automáticamente el certificado PDF para cada materia guardada
+- se agrega una fila por materia en la planilla de Talleres
+- se genera, descarga y envía un único certificado PDF por estudiante, con todas las materias de esa inscripción en una tabla
+
+El formulario incluye país, provincia, pertenencia indígena y discapacidad con detalle condicional. El email es obligatorio y debe tener un formato válido; la fecha de nacimiento se selecciona con el calendario. El monto es en pesos argentinos y, si se informa, debe ser de al menos $1.000.
+
+Las nuevas columnas de datos del estudiante se agregan al final de la pestaña `Inscripciones Talleres`; se conserva la planilla propia de Talleres configurada en `google_apps_script/Code.gs`. Los certificados muestran una tabla única con las columnas Materia, Profesor/a, Comisión, Turno y Horario.
 
 Importante: esta integración es append-only. No borra ni reemplaza filas en la planilla.
 
@@ -89,7 +93,7 @@ Importante: esta integración es append-only. No borra ni reemplaza filas en la 
 - Si una comisión supera su cupo, el registro se guarda con `en_lista_espera = Si` automáticamente.
 - El frontend consulta estado de cupos central (`action=status`) para mostrar cuántos lugares quedan.
 
-Cuando actualices `google_apps_script/Code.gs`, redeploy de nuevo la Web App para que tome la nueva lógica.
+Cuando actualices `google_apps_script/Code.gs`, crea una nueva versión de la implementación de la Web App. Para verificarla, abre `sheetsAppendUrl?action=version&callback=console.log`; la versión nueva debe informar `2026-09-28-talleres-certificate-table-v1`. El correo y la descarga se solicitan por separado para que un fallo de descarga no oculte el resultado del correo; el envío no se reintenta automáticamente para evitar duplicados, mientras que la descarga se reintenta una vez si falla la carga JSONP. Publica también `app.js`, `index.html` y `styles.css` actualizados en el hosting.
 
 ### Modo alternativo (puente local)
 
